@@ -16,7 +16,7 @@ class Card:
         self.rank = rank
 
     def __str__(self):
-        return self.rank + ' of ' + self.suit
+        return ' of '.join((self.rank, self.suit))
 
 
 class Deck:
@@ -74,7 +74,7 @@ class Chips:
         self.total -= self.bet
 
 
-def take_bet(chips):
+def make_bet(chips):
 
     while True:
         try:
@@ -126,16 +126,16 @@ def show_all(player, dealer):
     for card in player.cards:
         print(card)
 
-def player_busts(player, dealer, chips):
-    print('\nPlayer busts! Dealer wins!')
+def player_loses(player, dealer, chips):
+    print('\nPlayer loses! Dealer wins!')
     chips.lose_bet()
 
 def player_wins(player, dealer, chips):
     print('\nPlayer wins!')
     chips.win_bet()
 
-def dealer_busts(player, dealer, chips):
-    print('\nDealer busts! Player wins!')
+def dealer_loses(player, dealer, chips):
+    print('\nDealer loses! Player wins!')
     chips.win_bet()
 
 def dealer_wins(player, dealer, chips):
@@ -166,7 +166,7 @@ while True:
     player_chips = Chips(200)
 
     # Take the Player for their bet
-    take_bet(player_chips)
+    make_bet(player_chips)
 
     # Show cards (but keep one dealer card hidden)
     show_some(player_hand, dealer_hand)
@@ -182,7 +182,7 @@ while True:
         # If player's hand exceeds 21, run player_busts() and break out of loop
         if player_hand.value > 21:
             show_all(player_hand, dealer_hand)
-            player_busts(player_hand, dealer_hand, player_chips)
+            player_loses(player_hand, dealer_hand, player_chips)
             break
 
     # If Player hasn't busted, play Dealer's hand until Dealer reaches 17
@@ -196,7 +196,7 @@ while True:
 
         # Run different winning scenarios
         if dealer_hand.value > 21:
-            dealer_busts(player_hand, dealer_hand, player_chips)
+            dealer_loses(player_hand, dealer_hand, player_chips)
 
         elif player_hand.value > dealer_hand.value:
             player_wins(player_hand, dealer_hand, player_chips)
